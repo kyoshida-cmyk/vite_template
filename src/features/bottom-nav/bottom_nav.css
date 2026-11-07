@@ -1,0 +1,106 @@
+:root {
+  /* 線の色 */
+  --bottom-nav-border-color: #95aad8;
+  /* 背景色 */
+  --bottom-nav-bg-color: #6289c6;
+  /* ボタンの数 */
+  --bottom-nav-NoB: 3;
+  /* ボタンの高さ */
+  --bottom-nav-height: 113px;
+  /* LPの幅 */
+  --bottom-nav-max-width: 500px;
+  /* ボトムナビ消える幅 */
+  --bottom-nav-min-width: 1096px; /* 変えたら下の @media の数値も合わせて変える */
+}
+
+/*-------------------------------------------
+l-footer
+--------------------------------------------*/
+
+/* ※ @media の条件に var() は使えないため数値で指定（--bottom-nav-min-width ＋ 1px） */
+@media screen and (min-width: 1097px) {
+  .l-footer {
+    margin-bottom: 0px;
+  }
+}
+
+/* 501pxより前でボトムナビを表示させるなら追加、させないならコメントアウト */
+@media screen and (max-width: 1096px) {
+  .l-footer {
+    margin-bottom: var(--bottom-nav-height);
+  }
+}
+
+/* ナビの大きさ分マージンを開ける */
+@media screen and (max-width: 501px) {
+  .l-footer {
+    margin-bottom: calc(100vw * var(--bottom-nav-height) / 499);
+  }
+}
+
+/*-------------------------------------------
+global-nav
+--------------------------------------------*/
+.global-nav {
+  width: 100%;
+  max-width: var(--bottom-nav-max-width);
+  height: auto;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: var(--bottom-nav-bg-color);
+  z-index: 1000;
+}
+.global-nav nav {
+  width: 100%;
+}
+.global-nav__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.global-nav__list__item {
+  border-top: 3px solid var(--bottom-nav-border-color);
+}
+
+.global-nav__list__item:not(:last-child) {
+  border-right: 3px solid var(--bottom-nav-border-color);
+}
+
+.global-nav__list__item a {
+  width: calc(var(--bottom-nav-max-width) / var(--bottom-nav-NoB));
+  height: auto;
+}
+.global-nav__list__item img {
+  width: 100%;
+  height: auto;
+  pointer-events: auto;
+}
+@media screen and (min-width: 501px) {
+  .global-nav {
+    width: 100%;
+    max-width: var(--bottom-nav-max-width);
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  .global-nav nav {
+    width: 100%;
+  }
+  .global-nav__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .global-nav__list__item a {
+    width: calc(var(--bottom-nav-max-width) / var(--bottom-nav-NoB));
+    height: auto;
+  }
+  .global-nav__list__item img {
+    width: 100%;
+    height: auto;
+  }
+}

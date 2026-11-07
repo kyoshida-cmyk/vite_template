@@ -1,0 +1,579 @@
+@charset "utf-8";
+/* =========================================================
+   move.css  アニメーション定義
+
+   ■ 使い方（HTML）
+     <img data-move="fadeUp">                          スクロールで表示
+     <img data-move="zoomIn" data-delay="0.3">         0.3秒遅らせる
+     <img data-move="fadeUp" data-duration="1.2">      1.2秒かけて動く
+     <img data-move="fadeUp" data-distance="40px">     移動量を変える
+     <img data-move="fadeUp" data-offset="300">        300px手前で発火
+     <img data-move="zoomIn" data-move-trigger="load"> 読み込み直後に再生
+     <ul data-move-stagger="0.15"> ... </ul>           子の[data-move]を0.15秒ずつずらす
+     ※ style="--move-delay: .3s" のように直接変数を書いてもOK
+
+   ■ 動きを増やすとき
+     1. @keyframes を書く
+     2. [data-move="名前"] { --move-name: キーフレーム名; } を足す
+        （デフォルトの時間・ディレイもここで変数として指定）
+     → JS 側の変更は不要
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   共通設定（全体のデフォルト値）
+--------------------------------------------------------- */
+:root {
+  --move-duration: 1s; /* 再生時間 */
+  --move-delay: 0s; /* 開始までの待ち時間 */
+  --move-ease: ease; /* イージング */
+  --move-distance: 100px; /* fade系の移動量 */
+}
+
+/* 表示前は透明にしておく */
+[data-move] {
+  opacity: 0;
+}
+
+/* 画面内に入ったら（JSが .is-moved を付与）再生 */
+[data-move].is-moved {
+  animation-name: var(--move-name);
+  animation-duration: var(--move-duration);
+  animation-delay: var(--move-delay);
+  animation-timing-function: var(--move-ease);
+  animation-fill-mode: both;
+}
+
+/* =========================================================
+   ふわっ
+   ========================================================= */
+[data-move="fadeIn"] {
+  --move-name: fadeInAnime;
+}
+[data-move="fadeUp"] {
+  --move-name: fadeUpAnime;
+  --move-duration: 2s;
+}
+[data-move="fadeDown"] {
+  --move-name: fadeDownAnime;
+  --move-duration: 0.5s;
+}
+[data-move="fadeLeft"] {
+  --move-name: fadeLeftAnime;
+}
+[data-move="fadeRight"] {
+  --move-name: fadeRightAnime;
+}
+
+@keyframes fadeInAnime {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeUpAnime {
+  from {
+    opacity: 0;
+    transform: translateY(var(--move-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeDownAnime {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--move-distance) * -1));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeLeftAnime {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--move-distance) * -1));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fadeRightAnime {
+  from {
+    opacity: 0;
+    transform: translateX(var(--move-distance));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* =========================================================
+   パタッ
+   ========================================================= */
+[data-move="flipDown"] {
+  --move-name: flipDownAnime;
+}
+[data-move="flipLeft"] {
+  --move-name: flipLeftAnime;
+  perspective-origin: left center;
+}
+[data-move="flipLeftTop"] {
+  --move-name: flipLeftTopAnime;
+}
+[data-move="flipRight"] {
+  --move-name: flipRightAnime;
+  perspective-origin: right center;
+}
+[data-move="flipRightTop"] {
+  --move-name: flipRightTopAnime;
+}
+
+@keyframes flipDownAnime {
+  from {
+    transform: perspective(2500px) rotateX(100deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(2500px) rotateX(0);
+    opacity: 1;
+  }
+}
+@keyframes flipLeftAnime {
+  from {
+    transform: perspective(600px) translate3d(0, 0, 0) rotateY(30deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(600px) translate3d(0, 0, 0) rotateY(0deg);
+    opacity: 1;
+  }
+}
+@keyframes flipLeftTopAnime {
+  from {
+    transform: translate(-20px, 80px) rotate(-15deg);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes flipRightAnime {
+  from {
+    transform: perspective(600px) translate3d(0, 0, 0) rotateY(-30deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(600px) translate3d(0, 0, 0) rotateY(0deg);
+    opacity: 1;
+  }
+}
+@keyframes flipRightTopAnime {
+  from {
+    transform: translate(-20px, 80px) rotate(25deg);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   くるっ
+   ========================================================= */
+[data-move="rotateX"] {
+  --move-name: rotateXAnime;
+}
+[data-move="rotateY"] {
+  --move-name: rotateYAnime;
+}
+[data-move="rotateLeftZ"] {
+  --move-name: rotateLeftZAnime;
+}
+[data-move="rotateRightZ"] {
+  --move-name: rotateRightZAnime;
+}
+
+@keyframes rotateXAnime {
+  from {
+    transform: rotateX(0);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(-360deg);
+    opacity: 1;
+  }
+}
+@keyframes rotateYAnime {
+  from {
+    transform: rotateY(0);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(-360deg);
+    opacity: 1;
+  }
+}
+@keyframes rotateLeftZAnime {
+  from {
+    transform: rotateZ(0);
+    opacity: 0;
+  }
+  to {
+    transform: rotateZ(-360deg);
+    opacity: 1;
+  }
+}
+@keyframes rotateRightZAnime {
+  from {
+    transform: rotateZ(0);
+    opacity: 0;
+  }
+  to {
+    transform: rotateZ(360deg);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   ボンッ、ヒュッ
+   ========================================================= */
+/* 弾むように拡大 */
+[data-move="zoomIn"] {
+  --move-name: zoomInAnime2; /* style.css の .zoomIn_start も参照 */
+  --move-duration: 0.75s;
+}
+/* なめらかに拡大 */
+[data-move="zoomInSoft"] {
+  --move-name: zoomInAnime;
+  --move-duration: 0.5s;
+}
+/* 縮小 */
+[data-move="zoomOut"] {
+  --move-name: zoomOutAnime;
+  --move-duration: 0.5s;
+}
+
+@keyframes zoomInAnime2 {
+  0% {
+    opacity: 0;
+    transform: scale(0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2, 1.25);
+  }
+  75% {
+    transform: scale(0.9, 0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+@keyframes zoomInAnime {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes zoomOutAnime {
+  from {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   じわっ
+   ========================================================= */
+[data-move="blur"] {
+  --move-name: blurAnime; /* style.css の .blur_start も参照 */
+}
+
+@keyframes blurAnime {
+  from {
+    filter: blur(10px);
+    transform: scale(1.02);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   にゅーん
+   ========================================================= */
+[data-move="smooth"] {
+  --move-name: smoothAnime;
+  transform-origin: left;
+}
+
+@keyframes smoothAnime {
+  from {
+    transform: translate3d(0, 100%, 0) skewY(12deg);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0) skewY(0);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   スーッ（枠線が伸びて出現）
+   <div data-move="line">
+     <div class="line2"><div class="lineinappear">中身</div></div>
+   </div>
+   上 → 右 → 下 → 左 → 中身 の順に --move-step 間隔で再生
+   ========================================================= */
+[data-move="line"] {
+  --move-name: fadeInAnime;
+  --move-step: 0.5s; /* 1辺あたりの時間 */
+  --move-line-color: #333;
+  position: relative;
+}
+[data-move="line"]::before,
+[data-move="line"]::after,
+[data-move="line"] .line2::before,
+[data-move="line"] .line2::after {
+  content: "";
+  position: absolute;
+  background: var(--move-line-color);
+}
+/* 上下線 */
+[data-move="line"]::before,
+[data-move="line"]::after {
+  width: 0;
+  height: 1px;
+}
+[data-move="line"]::before {
+  top: 0;
+  left: 0;
+}
+[data-move="line"]::after {
+  bottom: 0;
+  right: 0;
+}
+/* 左右線 */
+[data-move="line"] .line2::before,
+[data-move="line"] .line2::after {
+  width: 1px;
+  height: 0;
+}
+[data-move="line"] .line2::before {
+  top: 0;
+  right: 0;
+}
+[data-move="line"] .line2::after {
+  bottom: 0;
+  left: 0;
+}
+[data-move="line"] .lineinappear {
+  opacity: 0;
+}
+/* 再生 */
+[data-move="line"].is-moved::before {
+  animation: lineAnime var(--move-step) linear var(--move-delay) forwards;
+}
+[data-move="line"].is-moved .line2::before {
+  animation: lineAnime2 var(--move-step) linear calc(var(--move-delay) + var(--move-step) * 1) forwards;
+}
+[data-move="line"].is-moved::after {
+  animation: lineAnime var(--move-step) linear calc(var(--move-delay) + var(--move-step) * 2) forwards;
+}
+[data-move="line"].is-moved .line2::after {
+  animation: lineAnime2 var(--move-step) linear calc(var(--move-delay) + var(--move-step) * 3) forwards;
+}
+[data-move="line"].is-moved .lineinappear {
+  animation: fadeInAnime var(--move-step) linear calc(var(--move-delay) + var(--move-step) * 3) forwards;
+}
+
+@keyframes lineAnime {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes lineAnime2 {
+  from {
+    height: 0%;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+/* =========================================================
+   シャッ（背景色が伸びて出現）
+   <div data-move="bgLR"><div class="bgappear">中身</div></div>
+   bgLR（左から）/ bgRL（右から）/ bgDU（下から）/ bgUD（上から）
+   ========================================================= */
+[data-move="bgLR"],
+[data-move="bgRL"],
+[data-move="bgDU"],
+[data-move="bgUD"] {
+  --move-name: fadeInAnime;
+  --move-bg-color: #666;
+  --move-inner-delay: 0.6s; /* 中身が出るまでの時間 */
+  position: relative;
+  overflow: hidden;
+}
+[data-move="bgLR"]::before,
+[data-move="bgRL"]::before,
+[data-move="bgDU"]::before,
+[data-move="bgUD"]::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--move-bg-color);
+}
+[data-move="bgLR"].is-moved::before {
+  animation: bgLRextendAnime var(--move-duration) var(--move-delay) forwards;
+}
+[data-move="bgRL"].is-moved::before {
+  animation: bgRLextendAnime var(--move-duration) var(--move-delay) forwards;
+}
+[data-move="bgDU"].is-moved::before {
+  animation: bgDUextendAnime var(--move-duration) var(--move-delay) forwards;
+}
+[data-move="bgUD"].is-moved::before {
+  animation: bgUDextendAnime var(--move-duration) var(--move-delay) forwards;
+}
+[data-move] .bgappear {
+  opacity: 0;
+}
+[data-move].is-moved .bgappear {
+  animation: fadeInAnime var(--move-duration) calc(var(--move-delay) + var(--move-inner-delay)) forwards;
+}
+
+@keyframes bgLRextendAnime {
+  0% {
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  50% {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+  50.001% {
+    transform-origin: right;
+  }
+  100% {
+    transform-origin: right;
+    transform: scaleX(0);
+  }
+}
+@keyframes bgRLextendAnime {
+  0% {
+    transform-origin: right;
+    transform: scaleX(0);
+  }
+  50% {
+    transform-origin: right;
+    transform: scaleX(1);
+  }
+  50.001% {
+    transform-origin: left;
+  }
+  100% {
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+}
+@keyframes bgDUextendAnime {
+  0% {
+    transform-origin: bottom;
+    transform: scaleY(0);
+  }
+  50% {
+    transform-origin: bottom;
+    transform: scaleY(1);
+  }
+  50.001% {
+    transform-origin: top;
+  }
+  100% {
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+}
+@keyframes bgUDextendAnime {
+  0% {
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+  50% {
+    transform-origin: top;
+    transform: scaleY(1);
+  }
+  50.001% {
+    transform-origin: bottom;
+  }
+  100% {
+    transform-origin: bottom;
+    transform: scaleY(0);
+  }
+}
+
+/* =========================================================
+   ループ（スクロール不要・常に動く）
+   ========================================================= */
+/* ふわふわ漂う */
+.floating {
+  animation: floating-y 1.8s ease-in-out infinite alternate-reverse;
+}
+@keyframes floating-y {
+  0% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+.floating-reverce {
+  animation: floating-y-rev 2s ease-in-out infinite alternate-reverse;
+}
+@keyframes floating-y-rev {
+  0% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(-4px);
+  }
+}
+
+/* =========================================================
+   動きを減らす設定の端末では即表示
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  [data-move],
+  [data-move] .lineinappear,
+  [data-move] .bgappear {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

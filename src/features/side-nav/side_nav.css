@@ -1,0 +1,22 @@
+/*-------------------------------------------
+side-nav right
+--------------------------------------------*/
+
+.side-nav {
+  width: 100%;
+  display: block;
+  height: auto;
+  max-width: 440px;
+  margin: auto auto;
+  justify-content: center;
+  z-index: 200;
+}
+
+.side-nav-list {
+  max-width: 18vw;
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1vw;
+}

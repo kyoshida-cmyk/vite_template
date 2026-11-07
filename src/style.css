@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+/*-------------------------------------------
+base
+--------------------------------------------*/
+html {
+  scrollbar-gutter: stable;
+}
+
+img {
+  vertical-align: top;
+  width: 100%;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+video {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: bottom;
+}
+
+.main-contents {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.opacity:hover {
+  opacity: 0.8;
+}
+
+/* スクロール制御（ポップアップ表示中など） */
+body.is-locked {
+  overflow: hidden;
+}
+
+/*-------------------------------------------
+ここからページ固有のスタイル
+--------------------------------------------*/
