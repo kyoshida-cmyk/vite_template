@@ -17,8 +17,8 @@ LP・キャンペーンページ制作用の Vite テンプレートです。
 ## 新しい案件の始め方
 
 ```bash
-# 1. テンプレートをコピー（GitHub で管理している場合）
-npx tiged ユーザー名/vite-template 案件名
+# 1. テンプレートをコピー
+npx tiged kyoshida-cmyk/vite_template 案件名
 
 # 2. フォルダに移動して必要なパッケージを入れる
 cd 案件名
@@ -27,6 +27,8 @@ npm install
 # 3. 開発サーバーを起動
 npm run dev
 ```
+
+GitHub の画面から始める場合は、[リポジトリ](https://github.com/kyoshida-cmyk/vite_template)の「Use this template」→「Create a new repository」で案件用のリポジトリを作り、それを `git clone` してください。
 
 ローカルでコピーする場合は、`node_modules` を除いてフォルダごと複製し、`npm install` してください。
 
