@@ -35,9 +35,9 @@ GitHub の画面から始める場合は、[リポジトリ](https://github.com/
 ### コピーしたら最初にやること
 
 - [ ] `package.json` の `name` を案件名に変える
-- [ ] `vite.config.js` の `outDir`（出力先）を納品先のパスに合わせる
+- [ ] `vite.config.js` の `ENVIRONMENTS` の `outDir`（出力先）を納品先のパスに合わせる
 - [ ] `index.html` の `<title>`・`description`・`keywords` を入れる
-- [ ] 必要に応じて Google Tag Manager のコードを入れる
+- [ ] 必要に応じて Google Tag Manager のコードを入れる（`<!-- Google Tag Manager -->` 〜 `<!-- End Google Tag Manager -->` の間に貼る）
 
 ---
 
@@ -46,8 +46,10 @@ GitHub の画面から始める場合は、[リポジトリ](https://github.com/
 | コマンド | 内容 |
 |---|---|
 | `npm run dev` | 開発サーバーを起動（保存すると自動で反映） |
-| `npm run build` | 納品用データを `dist/` に書き出す |
-| `npm run preview` | 書き出したデータをブラウザで確認 |
+| `npm run build` | 本番用データを `dist/` に書き出す |
+| `npm run build:stg` | テスト環境用データを `dist-stg/` に書き出す |
+| `npm run preview` | 本番用データをブラウザで確認 |
+| `npm run preview:stg` | テスト環境用データをブラウザで確認 |
 
 ---
 
@@ -112,11 +114,25 @@ import "./features/popup/popup.js";
 - **`type="module"` と `crossorigin` を削除（初期状態はオフ）** … 普通の `defer` 付きスクリプトとして出力したい場合は、`vite.config.js` の `disableModuleAndCrossOrigin` のコメントアウトを外す
 - **`lang="en"` → `lang="ja"` に自動変換**
 
+### 本番用とテスト環境用の出し分け
+
+`vite.config.js` の先頭にある `ENVIRONMENTS` で、環境ごとの設定を変えられます。
+
+| | 本番（`npm run build`） | テスト環境（`npm run build:stg`） |
+|---|---|---|
+| 出力先 | `dist/` | `dist-stg/` |
+| 検索エンジン | 載る | 載らない（`<meta name="robots" content="noindex, nofollow">` を自動で追加） |
+| Google Tag Manager | そのまま | コードを自動で削除 |
+
+- GTM の削除は、`<!-- Google Tag Manager -->` 〜 `<!-- End Google Tag Manager -->`（noscript 側も同じ）の間を消す仕組みです。**GTM のコードは必ずこの目印の間に貼ってください。**
+- `npm run dev`（開発中）もテスト環境と同じ扱いで、GTM は読み込まれません。
+
 ### 出力先を変える
 
 ```js
-// vite.config.js
-outDir: "dist/lp/案件名/",
+// vite.config.js の ENVIRONMENTS
+production: { outDir: "dist/lp/案件名/", ... },
+staging:    { outDir: "dist-stg/lp/案件名/", ... },
 ```
 
 ### ページを増やす
@@ -211,3 +227,4 @@ JS 側の変更は不要です。
 
 - 2026-11-07 作成
 - 2026-11-07 機能ごとに `src/features/` へ整理。CSS・JS の読み込みを `main.js` に集約
+- 2026-11-18 本番用・テスト環境用のビルドを追加（テスト環境は noindex・GTM 削除・`dist-stg/` に出力）

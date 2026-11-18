@@ -27,6 +27,7 @@ video {
 }
 
 .main-contents {
+  /* 幅500px指定 */
   max-width: 500px;
   margin: 0 auto;
 }
